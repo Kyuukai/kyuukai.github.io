@@ -1,0 +1,205 @@
+/* KEYFRAMES */
+
+@keyframes dishAppear {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes checkmarkSlide {
+    0% {
+        width: 0%;
+    }
+
+    100% {
+        width: 64px;
+    }
+}
+
+@keyframes slide {
+    from {
+        margin-top: 100%;
+    }
+
+    to {
+        margin-top: 0%;
+    }
+}
+
+@keyframes filledHeart {
+    0% {
+        opacity: 0;
+        background-image: linear-gradient($primary, $secondary);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    100% {
+        opacity: 1;
+        background-image: linear-gradient($primary, $secondary);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+}
+
+@keyframes emptyHeart {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes checkmarkRotation {
+    0% {
+        transform: rotate(-240deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+/* ANIMATIONS */
+
+.header {
+    &__arrow {
+        transition: transform 400ms;
+
+        &:hover {
+            transform: scale(1.20);
+        }
+    }
+}
+
+.explo {
+    &__btn {
+        transform: scale(1);
+        transition: transform 400ms;
+
+        &:hover {
+            transform: scale(1.15);
+        }
+    }
+}
+
+.help {
+    &__step {
+        transition: transform 400ms, background-color 400ms, color 400ms;
+
+        &:hover {
+            transform: scale(1.01);
+            background-color: lighten($primary, 35);
+        }
+
+        &:hover .help__icon{
+            color: $primary;
+        }
+    }
+}
+
+
+.card {
+    transition: transform 400ms;
+
+    &__description {
+        transition: background-color 400ms;
+    }
+
+    &__new {
+        transition: transform 400ms, background-color 400ms;
+    }
+
+    &:hover {
+        transform: scale(1.01);
+    }
+
+    &:hover .card__description {
+        background-color: lighten($primary, 35);
+    }
+
+    &:hover .card__new{
+        transform: scale(1.05);
+        background-color: lighten($new-color, 20);
+    }
+
+    &__heart {
+
+        &:hover .card__heart__filled {
+            animation: filledHeart 1s forwards;
+        }
+        &:hover .card__heart__empty {
+            animation: emptyHeart 1s forwards;
+        }
+
+        &__filled {
+            position: absolute;
+            opacity: 0;
+        }
+
+        &__empty {
+            position: relative;
+        }
+    }
+}
+
+.info {
+    &__format {
+        &__logo {
+            transition: color 400ms;
+
+            &:hover {
+                transform: scale(1.05);
+            }
+        }
+    }
+
+    &__text {
+        transition: transform 400ms, color 400ms;
+
+        &:hover {
+            transform: scale(1.05);
+        }
+    }
+}
+
+.dish {
+    animation: dishAppear 3s, slide 1s;
+    animation-fill-mode: both;
+    max-width: 100%;
+    transition: transform 400ms;
+
+    &:hover {
+        transform: scale(1.01);
+    }
+
+    &:hover .dish__confirmation {
+        animation: checkmarkSlide 0.5s forwards;
+    }
+    
+    &:hover .checkmark {
+        animation: checkmarkRotation 0.5s;
+    }
+}
+
+@for $i from 0 through 9 {
+    .delay-#{$i} {
+        animation-delay: #{$i/10}s;
+    }
+}
+
+.order {
+    &__btn {
+        transition: transform 400ms;
+
+        &:hover {
+            transform: scale(1.10);
+        }
+    }
+}

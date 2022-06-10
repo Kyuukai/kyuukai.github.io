@@ -1,0 +1,458 @@
+@import url(https://fonts.googleapis.com/css?family=Shrikhand);
+@import url(https://fonts.googleapis.com/css?family=Roboto);
+@import "./_ressources.scss";
+@import "./_animations.scss";
+
+/* Elements principaux de la page */
+
+ol {
+    list-style: none;
+}
+
+li {
+    counter-increment: custom;
+    position: relative;
+}
+
+ol li::before {
+    content: counter(custom) "";
+    background-color: $primary;
+    position: absolute;
+    left: -14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    color: white;
+}
+
+ol li:first-child {
+    counter-reset: custom;
+}
+
+a {
+    text-decoration: none;
+}
+
+body {
+    @include default-formating;
+    font-family: "Roboto";
+}
+
+/* Mise en page Mobile - Accueil */
+
+.title {
+    font-family: "Shrikhand";
+    background-color: white;
+    position: relative;
+
+    &__name {
+        @include mainmenu-top-formating;
+        padding: 1rem;
+    }
+
+    &--withReturnArrow {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+    }
+
+    &__shadow {
+        box-shadow: 0px 3px 14px rgb(209, 209, 209);
+    }
+}
+
+.local {
+    @include mainmenu-top-formating;
+    background-color: $local-white;
+    padding: 0.7rem;
+
+    &__title {
+        margin: 1rem;
+        font-weight: bold;
+    }
+}
+
+.explo {
+    @include mainmenu-top-formating;
+    background-color: $light-gray;
+    padding: 1rem;
+
+    &__title {
+        @include mainmenu-top-formating;
+        padding: 1rem 4.5rem;
+    }
+
+    &__subtitle {
+        @include mainmenu-top-formating;
+        padding: 0 3rem;
+    }
+
+    &__btn {
+        background: linear-gradient($secondary, $primary);
+        border-radius: 30px 30px;
+        box-shadow: 0px 0px 4px $footer-gray;
+        border: 0px;
+        color: white;
+        font-weight: bold;
+        font-size: 16px;
+        padding: 1.1rem;
+        margin: 2rem;
+    }
+}
+
+.help {
+    &__list {
+        display: flex;
+        flex-direction: column;
+        padding: 0 10px;
+        margin: 0 0 50px 0;
+    }
+
+    &__title {
+        margin: 0;
+        padding: 1.5rem 2rem;
+    }
+
+    &__step {
+        border: 1px $light-gray;
+        border-radius: 20px;
+        background-color: $light-gray;
+        box-shadow: 0px 3px 14px rgb(209, 209, 209);
+        margin: 20px;
+        padding: 24px;
+    }
+
+    &__text {
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    &__icon {
+        color: gray;
+        padding: 5px;
+        width: 30px;
+    }
+}
+
+#restaurants {
+    background-color: $light-gray;
+
+    &__title {
+        padding: 0 2rem;
+    }
+}
+
+.cards {
+    display: flex;
+    flex-direction: column;
+    padding: 0 30px;
+    margin: 30px 0;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+
+    &__image {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        border-radius: 20px 20px 0 0;
+    }
+
+    &__new {
+        position: absolute;
+        margin: 10px;
+        padding: 8px;
+        right: 10px;
+        background-color: $tertiary;
+        border-radius: 4px;
+        color: $new-color;
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    &__description {
+        display: flex;
+        justify-content: space-between;
+        margin: 0;
+        box-shadow: 0px 3px 14px rgb(209, 209, 209);
+        border-radius: 0px 0px 20px 20px;
+    }
+
+    &__text {
+        display: flex;
+        flex-direction: column;
+        text-decoration: none;
+        color: black;
+        margin: 0;
+    }
+
+    &__title {
+        margin: 14px 14px 0px 14px;
+    }
+
+    &__local {
+        margin: 6px 14px 18px 14px;
+    }
+
+    &__heart {
+        margin: 24px;
+        font-size: 14px;
+        color: black;
+    }
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: $footer-gray;
+
+    &__format {
+        @include default-formating;
+        margin: 1rem 2.2rem;
+
+        &__logo {
+            margin: 1rem 0;
+            font-family: "Shrikhand";
+            font-size: 20px;
+            color: white;
+            width: fit-content;
+
+            &:hover {
+                color: black;
+            }
+        }
+    }
+
+    &__text {
+        display: flex;
+        @include default-formating;
+        color: white;
+        margin: 0.6rem 0;
+        width: fit-content;
+        height: fit-content;
+
+        &:hover {
+            color: $primary;
+        }
+
+        &__icon {
+            color: white;
+            margin: 0 10px 0 0;
+        }
+    }
+}
+
+/* Mise en page Mobile - Restaurants */
+
+.title {
+    &__image {
+        width: 100%;
+        height: 280px;
+        object-fit: cover;
+        position: absolute;
+        top: 80px;
+        z-index: -100;
+    }
+}
+
+.header {
+    &__arrow {
+        color: $footer-gray;
+        font-size: 20px;
+    }
+
+    &__dishes {
+        font-family: "Shrikhand";
+        display: flex;
+        margin: 220px 0px 0px 0px;
+        padding: 10px;
+        justify-content: space-around;
+        background-color: $light-gray;
+        border-radius: 40px 40px 0 0;
+        font-size: 14px;
+    }
+
+    &__subtitle {
+        padding: 0px 20px;
+        margin: 20px 0;
+        font-weight: lighter;
+        font-size: 14px;
+        position: relative;
+    }
+}
+
+.underline::after {
+    content: "";
+    position: absolute;
+    background-color: $tertiary;
+    width: 35px;
+    height: 3px;
+    left: 20px;
+    top: 20px;
+}
+
+.dishes {
+    display: flex;
+    flex-direction: column;
+    margin: 0px 10px;
+}
+
+.dish {
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0px 3px 14px rgb(209, 209, 209);
+    margin: 20px 0;
+    cursor: pointer;
+
+    &__name {
+        display: flex;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        flex-direction: column;
+        margin: 0;
+        padding: 10px;
+        width: 100%;
+
+        &__title {
+            font-weight: bold;
+            margin: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        &__subtitle {
+            display: flex;
+            justify-content: space-between;
+
+            &__name {
+                font-weight: normal;
+                margin: 6px 0;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            &__price {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 14px;
+                color: $footer-gray;
+                font-weight: bold;
+                margin: 0 10px;
+            }
+        }
+    }
+
+    &__confirmation {
+        width: 0%;
+        border-radius: 0px 10px 10px 0px;
+        display: flex;
+        background-color: $checkmark-color;
+        overflow: hidden;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+.circle {
+    background-color: white;
+    border-radius: 50%;
+    padding: 6px;
+}
+
+.checkmark {
+    color: $checkmark-color;
+    font-size: 18px;
+}
+
+.order {
+    display: flex;
+    justify-content: center;
+
+    &__btn {
+        background: linear-gradient($secondary, $primary);
+        border-radius: 30px 30px;
+        box-shadow: 0px 0px 4px $footer-gray;
+        border: 0px;
+        color: white;
+        font-weight: bold;
+        font-size: 16px;
+        padding: 1.2rem 3rem;
+        margin: 2rem;
+    }
+}
+
+/* Mise en page Desktop */
+
+@media only screen and (min-width: 1024px ) {
+    .container {
+        margin: 0 20%;
+    }
+}
+
+/*Loader*/
+
+.loader {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    background-color: #FFF;
+    left: 0;
+    top: 0;
+    z-index: 10000;
+    animation: loader 3s forwards;
+}
+
+/*Animation loader*/
+
+@keyframes loader {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        z-index: -10;
+    }
+}
+
+.loader__circle {
+    border: 10px solid #F3F3F3;
+    border-top: 10px solid $primary;
+    border-bottom: 10px solid $secondary;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    animation: spin 4s linear forwards;
+    margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+/*Animation du loader circle*/
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+        opacity: 1;
+    }
+
+    100% {
+        transform: rotate(360deg);
+        opacity: 0;
+    }
+}

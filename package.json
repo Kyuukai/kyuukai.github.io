@@ -1,0 +1,15 @@
+{
+  "dependencies": {
+    "sass": "^1.51.0"
+  },
+  "name": "code",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "sass":"sass --watch ./sass/main.scss:./public/css/style.css"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
