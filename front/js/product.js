@@ -4,7 +4,7 @@ var str = window.location.href;
 var url = new URL(str);
 var id = url.searchParams.get("id");
 
-fetch(`http://localhost:3000/api/products/${id}`)
+fetch(`http://localhost:3000/api/products/${id}`) // On récupère l'ID du produit
 
 .then(function(res) { 
     if (res.ok) {
@@ -37,3 +37,46 @@ fetch(`http://localhost:3000/api/products/${id}`)
         colors.appendChild(colors_element); // Je rajoute tout ce que j'ai fait dans la boucle en tant qu'enfant du parent "colors".
     })
 })
+
+const addToCart = document.getElementById("addToCart");
+addToCart.addEventListener("click", addProductToCart);
+var colors = document.getElementById("colors");
+
+function redirectionToCart() {
+    if (
+        window.confirm(
+            "Votre produit a été ajouté au panier. Pour le consulter, cliquez sur OK."
+        )
+    ) {
+        window.location.href = "cart.html";
+    }
+}
+
+function addProductToCart() {
+
+    if (!window.localStorage.getItem("panier"))
+        window.localStorage.setItem("panier", JSON.stringify([]));
+
+    let article = {
+        id: id,
+        quantity: document.getElementById("quantity").value,
+        color: colors.options[colors.selectedIndex].value
+    };
+
+    if (
+        article.color != "" &&
+        article.quantity > 0 &&
+        article.quantity < 100
+    ) {
+        const panier = JSON.parse(window.localStorage.getItem("panier"));
+        panier.push(article);
+        window.localStorage.setItem("panier", JSON.stringify(panier));
+
+        document.getElementById("addToCart").textContent = "Produit ajouté !";
+        document.getElementById("addToCart").style.color = "rgb(0, 105, 0";
+        redirectionToCart();
+
+    } else {
+        alert("Veuillez choisir une couleur et/ou une quantité valide")
+    }
+}
