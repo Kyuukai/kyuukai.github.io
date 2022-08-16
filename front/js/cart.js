@@ -109,13 +109,11 @@ function draw_articles() {
         const articleQuantity = document.getElementsByClassName("itemQuantity");
 
         for (let i = 0; i < articleQuantity.length; i++) {
-          articleQuantity[i].addEventListener("change", function (event) {
+          articleQuantity[i].addEventListener("change", function () {
             panier[i].quantity = articleQuantity[i].value;
             localStorage.setItem("panier", JSON.stringify(panier));
-            draw_articles();
+            panierProduitPrix.innerText = "Prix: " + value.price * article.quantity + "€";
             majPrixQty();
-
-            console.log(articleQuantity[i]);
           })
         }
       })
@@ -132,21 +130,64 @@ function supprimerArticle(event) {
   window.localStorage.setItem("panier", JSON.stringify(panier));
 
   draw_articles();
+  majPrixQty();
 }
 
 async function majPrixQty(){
   const panier = JSON.parse(localStorage.getItem("panier"));
   let sum = 0;
+  let quantity = 0;
 
   for(let article of panier) {
 
     const res = await fetch(`http://localhost:3000/api/products/${article.id}`)
     const value = await res.json();
+
     sum += value.price * article.quantity;
-    console.log(`sum: ${sum} | prix: ${value.price} | quantity: ${article.quantity}`);
+    quantity += parseInt(article.quantity)
   }
   
   const prix_produit = document.getElementById("totalPrice");
   prix_produit.innerHTML = sum;
 
+  const quantity_produit = document.getElementById("totalQuantity");
+  quantity_produit.innerHTML = quantity;
 }
+
+document.getElementById("order").addEventListener("click", function(event) {
+
+  event.preventDefault();
+  if(1==1) {
+
+    let dataUser = {
+    "firstName" : document.getElementById("firstName").value,
+    "lastName" : document.getElementById("lastName").value,
+    "address" : document.getElementById("address").value,
+    "city" : document.getElementById("city").value,
+    "email" : document.getElementById("email").value
+    };
+
+    let productToSubmit = [];
+    const panier = JSON.parse(localStorage.getItem("panier"));
+    panier.forEach(element => {
+      productToSubmit.push(element.id);
+    });
+
+    let dataToSend = {
+      "contact": dataUser,
+      "products": productToSubmit
+    };
+
+    let promesseReception = fetch("http://localhost:3000/api/products/order", {
+      method: "POST",
+      body: JSON.stringify(dataToSend),
+      headers: {"Content-Type": "application/json"}
+    })
+
+    promesseReception.then(async(response) => {
+      let retourServeur = await response.json();
+      console.log(retourServeur);
+      window.location.href = "confirmation.html?orderId=" + retourServeur.orderId;
+    });
+  }
+});
