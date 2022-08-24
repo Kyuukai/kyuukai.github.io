@@ -133,12 +133,12 @@ function supprimerArticle(event) {
   majPrixQty();
 }
 
-async function majPrixQty(){
+async function majPrixQty() {
   const panier = JSON.parse(localStorage.getItem("panier"));
   let sum = 0;
   let quantity = 0;
 
-  for(let article of panier) {
+  for (let article of panier) {
 
     const res = await fetch(`http://localhost:3000/api/products/${article.id}`)
     const value = await res.json();
@@ -146,7 +146,7 @@ async function majPrixQty(){
     sum += value.price * article.quantity;
     quantity += parseInt(article.quantity)
   }
-  
+
   const prix_produit = document.getElementById("totalPrice");
   prix_produit.innerHTML = sum;
 
@@ -154,18 +154,19 @@ async function majPrixQty(){
   quantity_produit.innerHTML = quantity;
 }
 
-document.getElementById("order").addEventListener("click", function(event) {
+document.getElementById("order").addEventListener("click", function (event) {
 
   event.preventDefault();
-  if(1==1) {
 
-    let dataUser = {
-    "firstName" : document.getElementById("firstName").value,
-    "lastName" : document.getElementById("lastName").value,
-    "address" : document.getElementById("address").value,
-    "city" : document.getElementById("city").value,
-    "email" : document.getElementById("email").value
-    };
+  let dataUser = {
+    "firstName": document.getElementById("firstName").value,
+    "lastName": document.getElementById("lastName").value,
+    "address": document.getElementById("address").value,
+    "city": document.getElementById("city").value,
+    "email": document.getElementById("email").value
+  };
+
+  if (checkFormulaire(dataUser)) {
 
     let productToSubmit = [];
     const panier = JSON.parse(localStorage.getItem("panier"));
@@ -181,13 +182,57 @@ document.getElementById("order").addEventListener("click", function(event) {
     let promesseReception = fetch("http://localhost:3000/api/products/order", {
       method: "POST",
       body: JSON.stringify(dataToSend),
-      headers: {"Content-Type": "application/json"}
+      headers: { "Content-Type": "application/json" }
     })
 
-    promesseReception.then(async(response) => {
+    promesseReception.then(async (response) => {
       let retourServeur = await response.json();
       console.log(retourServeur);
       window.location.href = "confirmation.html?orderId=" + retourServeur.orderId;
     });
   }
 });
+
+// RegExp //
+
+function checkFormulaire(dataUser) {
+
+  let regExpFirstName = /^[^0-9_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\]]{3,20}$/.test(dataUser.firstName);
+  let regExpLastName = /^[^0-9_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\]]{3,20}$/.test(dataUser.lastName);
+  let regExpAddress = /^[0-9]{1,3}(?:(?:[,. ]){1}[-a-zA-Zàâäéèêëïîôöùûüç]+)+/.test(dataUser.address);
+  let regExpCity = /^[a-zA-Zàâäéèêëïîôöùûüç]+(?:[- ][a-zA-Zàâäéèêëïîôöùûüç]+)*$/.test(dataUser.city);
+  let regExpEmail = /^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$/.test(dataUser.email);
+  let error = false;
+
+  if (!regExpFirstName) {
+    let firstNameErrorMsg = document.getElementById("firstNameErrorMsg");
+    firstNameErrorMsg.innerHTML = "Votre prénom doit contenir entre 3 et 20 caractères";
+    error = true;
+  }
+
+  if (!regExpLastName) {
+    let lastNameErrorMsg = document.getElementById("lastNameErrorMsg");
+    lastNameErrorMsg.innerHTML = "Votre nom doit contenir entre 3 et 20 caractères";
+    error = true;
+  }
+
+  if (!regExpAddress) {
+    let addressErrorMsg = document.getElementById("addressErrorMsg");
+    addressErrorMsg.innerHTML = "Votre addresse est invalide";
+    error = true;
+  }
+
+  if (!regExpCity) {
+    let cityErrorMsg = document.getElementById("cityErrorMsg");
+    cityErrorMsg.innerHTML = "Votre ville est invalide";
+    error = true;
+  }
+
+  if (!regExpEmail) {
+    let emailErrorMsg = document.getElementById("emailErrorMsg");
+    emailErrorMsg.innerHTML = "Votre e-mail est invalide";
+    error = true;
+  }
+
+  return !error;
+}
