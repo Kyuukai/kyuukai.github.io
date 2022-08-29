@@ -1,7 +1,7 @@
-draw_articles();
-majPrixQty();
+draw_articles(); // J'initialise le panier dès qu'on arrive sur la page
+majPrixQty(); // J'exécute la fonction pour afficher le prix total des produits
 
-function draw_articles() {
+function draw_articles() { // Fonction qui me permet de créer tout le HTML et d'importer les données depuis l'API pour tout les produits.
 
   const panier = JSON.parse(localStorage.getItem("panier"));
   const panierProduit = document.getElementById("cart__items");
@@ -9,7 +9,7 @@ function draw_articles() {
 
   console.log(panier);
 
-  for (let article of panier) {
+  for (let article of panier) { // Boucle for pour les éléments dans la clé "panier" qui est stockée dans le localStorage.
 
     fetch(`http://localhost:3000/api/products/${article.id}`)
 
@@ -19,7 +19,7 @@ function draw_articles() {
         }
       })
 
-      .then(function (value) {
+      .then(function (value) { // Si la promesse est tenue, on crée le HTML pour chaque article ajouté au panier les spécificités du produit en question.
 
         //Initialisation produit
         const panierProduitArticle = document.createElement("article");
@@ -108,32 +108,34 @@ function draw_articles() {
         //Changement Quantité
         const articleQuantity = document.getElementsByClassName("itemQuantity");
 
-        for (let i = 0; i < articleQuantity.length; i++) {
-          articleQuantity[i].addEventListener("change", function () {
-            panier[i].quantity = articleQuantity[i].value;
-            localStorage.setItem("panier", JSON.stringify(panier));
-            panierProduitPrix.innerText = "Prix: " + value.price * article.quantity + "€";
-            majPrixQty();
+        for (let i = 0; i < articleQuantity.length; i++) { //Je créée une boucle for, avec i qui pointera chaque éléments de mon panier un par un
+          articleQuantity[i].addEventListener("change", function () { // A chaque fois que je change articleQuantity, j'exécute une fonction
+            panier[i].quantity = articleQuantity[i].value; // Je change la valeur de quantity dans mon panier et remplace par celle de articleQuantity qui ont tout les deux la clé commune i
+            localStorage.setItem("panier", JSON.stringify(panier)); // Je change la valeur JS en JSON et le stocke dans le localStorage
+            panierProduitPrix.innerText = "Prix: " + value.price * article.quantity + "€"; // Je change en temps réel le nouveau prix total du produit en fonction de la quantité
+            majPrixQty(); // J'exécute la fonction majPrixQty qui me permets de mettre à jour le prix total de tout les articles
           })
         }
       })
   }
 }
 
-function supprimerArticle(event) {
+function supprimerArticle(event) { // Fonction permettant de supprimer un produit du panier
 
-  const panier = JSON.parse(localStorage.getItem("panier"));
-  var child = event.target.parentNode.parentNode.parentNode;
-  var parent = child.parentNode;
-  var index = Array.prototype.indexOf.call(parent.children, child);
-  panier.splice(index, 1);
-  window.localStorage.setItem("panier", JSON.stringify(panier));
+  const panier = JSON.parse(localStorage.getItem("panier")); // On importe la clé "panier"
+  var child = event.target.parentNode.parentNode.parentNode; // La variable "child" est égale à "cart__item" selon le produit
+  var parent = child.parentNode; // La variable "parent" est égale à "cart__items"
+  var index = Array.prototype.indexOf.call(parent.children, child); // L'index varie en fonction du produit auquel on va choisir de supprimer
+  panier.splice(index, 1); // On supprime l'élément de notre panier
+  window.localStorage.setItem("panier", JSON.stringify(panier)); // Je change la valeur JS en JSON et le stocke dans le localStorage
 
-  draw_articles();
-  majPrixQty();
+  draw_articles(); // On mets à jour le HTML
+  majPrixQty(); // On mets à jour le prix
 }
 
-async function majPrixQty() {
+async function majPrixQty() { // On crée une fonction pour mettre à jour le prix et la quantité totale des produitsqu'on va mettre en asynchrone. La fonction va attendre la réponse de l'API avant de mettre les données à jour.
+  // On importe le clé "panier" et on déclare la somme totale et la quantité et on fait une boucle "for" pour donner à "sum" (le prix total) et "quantity" (quantité totale) les valeurs correspondant a tout ce qui se trouve dans notre panier
+  //Enfin, on sélectionne les ID sur le HTML pour donner les valeurs stockées dans "sum" et "quantity"
   const panier = JSON.parse(localStorage.getItem("panier"));
   let sum = 0;
   let quantity = 0;
@@ -154,7 +156,11 @@ async function majPrixQty() {
   quantity_produit.innerHTML = quantity;
 }
 
-document.getElementById("order").addEventListener("click", function (event) {
+document.getElementById("order").addEventListener("click", function (event) { 
+  // On sélectionne l'ID "order" et on rajoute une fonction qui s'exécute si on clique sur le bouton "Commander"
+  // On fait en sorte de ne pas prendre les paramètres par défaut du bouton, on créée un objet contenant toutes les lignes du formulaire et on fait une fonction if contenant la vérification regExp ci-dessous. 
+  // Si le formulaire est valide, on récupère depuis le panier tous les elements du client (productToSubmit), ainsi que ses info perso (dataUser) et on les fusionne dans 1 gros objet que nous enverrons a notre API
+  // Enfin, on récupère la réponse de notre appel d'API et on prends l'orderId
 
   event.preventDefault();
 
@@ -195,7 +201,9 @@ document.getElementById("order").addEventListener("click", function (event) {
 
 // RegExp //
 
-function checkFormulaire(dataUser) {
+function checkFormulaire(dataUser) { // On crée une fonction qui nous permets de vérifier si les données entrées par l'utilisateur sont correctes. On créée tout d'abord des variables regEx pour toutes les lignes du formulaire
+  // Ainsi qu'un booléen error qui est défini sur False par défaut.
+  // On crée des conditions "if" pour vérifier si chaque ligne est false/ null/ underfined ou 0, on affiche un message d'erreur et error = true
 
   let regExpFirstName = /^[^0-9_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\]]{3,20}$/.test(dataUser.firstName);
   let regExpLastName = /^[^0-9_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\]]{3,20}$/.test(dataUser.lastName);

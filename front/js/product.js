@@ -12,7 +12,7 @@ fetch(`http://localhost:3000/api/products/${id}`) // On récupère l'ID du produ
     }
 })
 
-.then(function(value) {
+.then(function(value) { // Je créée une fonction si la promesse est tenue qui me permettra de créer l'HTML pour le titre, l'image, le prix, la description ainsi que les couleurs.
     console.log(value);
 
     const image = document.querySelector(".item__img > img");
@@ -42,7 +42,7 @@ const addToCart = document.getElementById("addToCart");
 addToCart.addEventListener("click", addProductToCart); //Si je clique sur "Ajouter au Panier", éxecute la fonction "addProductToCart"
 var colors = document.getElementById("colors");
 
-function redirectionToCart() {
+function redirectionToCart() { // Après avoir ajouté un article au panier, j'affiche un message pour demander à l'utilisateur s'il veut aller au panier ou si il souhaite revenir à l'accueil
     if (
         window.confirm(
             "Votre produit a été ajouté au panier. Pour le consulter, cliquez sur OK."
@@ -74,7 +74,7 @@ function addProductToCart() {
         let listeFinalProduit = [];
         let dejaPresent = false;
 
-        panier.forEach (function (articleExistant) {
+        panier.forEach (function (articleExistant) { // On crée une fonction pour faire en sorte que les produits déjà existants dans le panier ne soient pas dupliqués si on rajoute le même produit
 
             if (article.id == articleExistant.id && article.color == articleExistant.color) {
                 articleExistant.quantity = article.quantity + parseInt(articleExistant.quantity);

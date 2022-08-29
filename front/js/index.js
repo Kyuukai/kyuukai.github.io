@@ -32,7 +32,7 @@ fetch("http://localhost:3000/api/products") //On importe les données de l'API d
         produit_description.innerHTML = value.description;
         produit_article.appendChild(produit_description);
 
-        items.appendChild(produit);//Une fois que notre produit est créé, on l'ajoute dans les enfants de l'élément "items"
+        items.appendChild(produit); //Une fois que notre produit est créé, on l'ajoute dans les enfants de l'élément "items"
         
         console.log(values);
     }) 
